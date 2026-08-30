@@ -7,13 +7,12 @@ int main(void) {
     string str;
     cin >> str;
     
-    int len = str.length();
-    for (int i=0; i<len; i++){
-        if (str[i] <= 90 && str[i] >= 65) str[i] += 32;
-        else str[i] -= 32;
+    for (auto c : str){
+        if (c <= 'z' && c >= 'a')
+            c -= 'a' - 'A';
+        else c += 'a' - 'A';
+        cout << c;
     }
-    
-    cout << str << endl;
     
     return 0;
 }
