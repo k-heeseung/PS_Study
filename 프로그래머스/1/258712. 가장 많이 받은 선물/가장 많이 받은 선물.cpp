@@ -1,49 +1,39 @@
 #include <string>
 #include <vector>
+#include <map>
 
 using namespace std;
 
 int solution(vector<string> friends, vector<string> gifts) {
     int answer = 0;
-
     int len = friends.size();
     vector<vector<int>> data(len, vector<int>(len, 0));
-    vector<vector<int>> index(len, vector<int>(3,0));
+    vector<int> index(len, 0);
     vector<int> count(len, 0);
+    map<string, int> m;
+    for (int i=0; i<len; i++){
+        m.insert({friends[i], i});
+    }
     int giver, receiver;
     for (auto s : gifts){
         int space_idx = s.find(" ");
         string first = s.substr(0, space_idx);
         string second = s.substr(space_idx+1, -1);
-        for (int i=0; i<len; i++){
-            if (first == friends[i]) giver = i;
-            else if (second == friends[i]) receiver = i;
-        }
+        giver = m[first];
+        receiver = m[second];
         data[giver][receiver]++;
+        index[giver]++;
+        index[receiver]--;
     }
     
     for (int i=0; i<len; i++){
         for (int j=0; j<len; j++){
-            index[i][0] += data[i][j];
-            index[j][1] += data[i][j];
-        }
-    }
-    
-    for (int i=0; i<len; i++){
-        for (int j=i+1; j<len; j++){
             if (data[i][j] > data[j][i]) count[i]++;
-            else if (data[i][j] < data[j][i]) count[j]++;
-            else {
-                int first = index[i][0]-index[i][1];
-                int second = index[j][0]-index[j][1];
-                if ( first > second ) count[i]++;
-                else if (first < second ) count[j]++;
+            else if (data[i][j] == data[j][i]){
+                if (index[i]>index[j]) count[i]++;
             }
         }
-    }
-    
-    for (auto i : count){
-        if (answer < i) answer = i;
+        answer = max(count[i], answer);
     }
     
     return answer;
