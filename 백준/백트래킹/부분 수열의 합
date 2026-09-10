@@ -1,0 +1,47 @@
+#include <bits/stdc++.h>
+
+using namespace std;
+
+int cnt, n, s;
+int isused[25];
+vector<int> v;
+
+void func(int cur, long long int sum){
+    if (sum == s){
+        if (cur != -1){
+            cnt++;
+        }
+    }
+    for (int i=0; i<n; i++){
+        if (!isused[i] && (i > cur)){
+            sum += v[i];
+            isused[i] = 1;
+            func(i, sum);
+            sum -= v[i];
+            isused[i] = 0;
+        }
+    }
+    return;
+}
+
+
+int main()
+{
+    ios::sync_with_stdio(0);
+    cin.tie(0);
+    
+    int tmp;
+    long long int sum = 0;
+    
+    cin >> n >> s;
+
+    for (int i=0; i<n; i++){
+        cin >> tmp;
+        v.push_back(tmp);
+    }
+    sort(v.begin(), v.end());
+    func(-1, sum);
+    cout << cnt;
+    
+    return 0;
+}
