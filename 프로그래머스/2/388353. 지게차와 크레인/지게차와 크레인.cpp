@@ -14,10 +14,10 @@ int check(int i, int j, int time){
     vector<vector<int>> visited(55, vector<int>(55,0));
     stack<pair<int, int>> s;
     s.push({i,j});
+    visited[i][j] = 1;
     while(!s.empty()){
         int x = s.top().first;
         int y = s.top().second;
-        visited[x][y] = 1;
         s.pop();
         for (int i=0; i<4; i++){
             int cur_x = x+dx[i];
@@ -26,6 +26,7 @@ int check(int i, int j, int time){
             if (visited[cur_x][cur_y]) continue;
             else if (mark[cur_x][cur_y] != -1 && mark[cur_x][cur_y] != time){
                 s.push({cur_x, cur_y});
+                visited[cur_x][cur_y] = 1;
             }
         }
     }
